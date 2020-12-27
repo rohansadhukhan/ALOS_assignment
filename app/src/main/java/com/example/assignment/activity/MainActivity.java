@@ -71,9 +71,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mUser = mAuth.getCurrentUser();
         mStore = FirebaseFirestore.getInstance();
 
-        headerEmail = findViewById(R.id.header_user_email);
-        headerName = findViewById(R.id.header_user_name);
-
+        View v = navigationView.getHeaderView(0);
+        headerEmail = v.findViewById(R.id.header_user_email);
+        headerName = v.findViewById(R.id.header_user_name);
 
         if (mUser != null) {
             mStore.collection("users")
@@ -83,16 +83,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             Utility.NAME = value.getString("Name");
                             Utility.EMAIL = value.getString("Email");
                             Log.d(TAG, Utility.NAME);
+                            Log.d(TAG, Utility.EMAIL);
                         }
                     });
         }
 
         if(Utility.NAME != null) {
-            headerName.setText(Utility.NAME);
+            headerName.setText(Utility.NAME.toString());
         }
 
         if(Utility.EMAIL != null) {
-            headerEmail.setText(Utility.EMAIL);
+            headerEmail.setText(Utility.EMAIL.toString());
         }
 
     }
