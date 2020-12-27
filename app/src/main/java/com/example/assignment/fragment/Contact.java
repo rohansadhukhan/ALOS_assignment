@@ -2,6 +2,8 @@ package com.example.assignment.fragment;
 
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -15,6 +17,8 @@ import android.widget.Toast;
 
 import com.example.assignment.R;
 import com.google.android.material.imageview.ShapeableImageView;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,10 +82,25 @@ public class Contact extends Fragment {
         email.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/html");
-            intent.putExtra(Intent.EXTRA_EMAIL, "company@email.com");
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-            intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
-            startActivity(Intent.createChooser(intent, "Send Email"));
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"company@gmail.com"});
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Test Subject");
+            intent.putExtra(Intent.EXTRA_TEXT, "Test email body");
+
+            PackageManager packManager = getContext().getPackageManager();
+            List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+
+            boolean resolved = false;
+            for (ResolveInfo resolveInfo : resolvedInfoList) {
+                if (resolveInfo.activityInfo.packageName.startsWith("com.google.android.gm")) {
+                    intent.setClassName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
+                    resolved = true;
+                    break;
+                }
+            }
+            startActivity(intent);
+            if (!resolved) {
+                Toast.makeText(getContext(), "Twitter app isn't found", Toast.LENGTH_LONG).show();
+            }
         });
 
         ShapeableImageView chat = view.findViewById(R.id.goto_chat);
