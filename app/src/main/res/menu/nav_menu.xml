@@ -34,10 +34,10 @@
             android:icon="@drawable/ic_contact_us"
             android:title="Contact Us" />
 
-        <item
-            android:id="@+id/signOut"
-            android:icon="@drawable/ic_logout"
-            android:title="SignOut" />
+<!--        <item-->
+<!--            android:id="@+id/signOut"-->
+<!--            android:icon="@drawable/ic_logout"-->
+<!--            android:title="SignOut" />-->
 
     </group>
 

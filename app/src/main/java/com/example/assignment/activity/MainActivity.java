@@ -3,13 +3,11 @@ package com.example.assignment.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,10 +23,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private MaterialTextView headerName;
     private MaterialTextView headerEmail;
+
+    private TextView signOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +72,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         headerEmail = v.findViewById(R.id.header_user_email);
         headerName = v.findViewById(R.id.header_user_name);
 
+        signOut = findViewById(R.id.sign_out);
+
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
+            }
+        });
+
         if (mUser != null) {
             mStore.collection("users")
                     .document(mUser.getUid())
@@ -82,18 +90,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         if (value != null) {
                             Utility.NAME = value.getString("Name");
                             Utility.EMAIL = value.getString("Email");
+                            headerName.setText(Utility.NAME);
+                            headerEmail.setText(Utility.EMAIL);
                             Log.d(TAG, Utility.NAME);
                             Log.d(TAG, Utility.EMAIL);
                         }
                     });
-        }
-
-        if(Utility.NAME != null) {
-            headerName.setText(Utility.NAME.toString());
-        }
-
-        if(Utility.EMAIL != null) {
-            headerEmail.setText(Utility.EMAIL.toString());
         }
 
     }
@@ -143,12 +145,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             case R.id.contact_us: {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Contact()).commit();
-                break;
-            }
-            case R.id.signOut: {
-                mAuth.signOut();
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
                 break;
             }
             default:
