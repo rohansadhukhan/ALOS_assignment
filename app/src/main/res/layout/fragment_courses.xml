@@ -9,6 +9,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="Update according to UI and I only create the Courses, Invite and Contact us fragment"
+        android:gravity="center"
+        android:layout_margin="50dp"/>
 
 </FrameLayout>
