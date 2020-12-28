@@ -21,7 +21,6 @@
                 android:padding="16dp"
                 android:textSize="18sp"
                 android:text="We'd love to here from you"
-                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -30,7 +29,7 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="For all kind of queries related to course, zenclass and other platform related information"
-                android:textColor="@color/black" />
+                 />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -52,7 +51,6 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/email_icon"
                     android:text="Email us"
-                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -62,7 +60,6 @@
                     android:layout_marginEnd="10dp"
                     android:layout_toStartOf="@+id/goto_email"
                     android:text="company@email.com"
-                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -82,7 +79,7 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="You will get a reply back from us within 48 hours"
-                android:textColor="@color/black" />
+                 />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -104,7 +101,6 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/chat_icon"
                     android:text="Chat with us"
-                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -114,7 +110,6 @@
                     android:layout_marginEnd="10dp"
                     android:layout_toStartOf="@+id/goto_chat"
                     android:text="(9AM - 9PM)"
-                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -147,7 +142,6 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/follow_icon"
                     android:text="Follow us"
-                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -191,7 +185,6 @@
                 android:padding="18dp"
                 android:text="Visit Us"
                 android:textSize="18sp"
-                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <WebView

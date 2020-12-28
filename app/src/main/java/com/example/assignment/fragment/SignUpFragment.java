@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.assignment.R;
+import com.example.assignment.Utility;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -23,6 +24,10 @@ import com.google.android.material.textfield.TextInputEditText;
 public class SignUpFragment extends BottomSheetDialogFragment {
 
     private SignUpListener listener;
+    private TextInputEditText name_sign_up;
+    private TextInputEditText email_sign_up;
+    private TextInputEditText password_sign_up;
+    private MaterialButton signUp;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,16 +75,16 @@ public class SignUpFragment extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
 
-        TextInputEditText name = view.findViewById(R.id.sign_up_name);
-        TextInputEditText email = view.findViewById(R.id.sign_up_email);
-        TextInputEditText password = view.findViewById(R.id.sign_up_password);
-        MaterialButton signUp = view.findViewById(R.id.sign_up);
+        name_sign_up = view.findViewById(R.id.sign_up_name);
+        email_sign_up = view.findViewById(R.id.sign_up_email);
+        password_sign_up = view.findViewById(R.id.sign_up_password);
+        signUp = view.findViewById(R.id.sign_up);
+
         signUp.setOnClickListener(v -> {
-            if(name.getText().toString().isEmpty() || email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
-                return;
+            if(validateEmail(email_sign_up.getText().toString()) && validateName(name_sign_up.getText().toString()) && validatePassword(password_sign_up.getText().toString())) {
+                listener.signUpUser(name_sign_up.getText().toString(), email_sign_up.getText().toString(), password_sign_up.getText().toString());
+                dismiss();
             }
-            listener.signUpUser(name.getText().toString(), email.getText().toString(), password.getText().toString());
-            dismiss();
         });
 
 
@@ -99,5 +104,44 @@ public class SignUpFragment extends BottomSheetDialogFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " implement SignUp Bottom Sheet Listener");
         }
+    }
+
+    private boolean validateEmail(String email) {
+
+        if(email.isEmpty()) {
+            email_sign_up.setError("Field can't be empty");
+            return false;
+        } else if(!Utility.EMAIL_PATTERN.matcher(email).matches()) {
+            email_sign_up.setError("Please enter a valid email");
+            return false;
+        }
+        email_sign_up.setError(null);
+        return true;
+
+    }
+
+    private boolean validateName(String name) {
+
+        if(name.isEmpty()) {
+            name_sign_up.setError("Field can't be empty");
+            return false;
+        }
+        name_sign_up.setError(null);
+        return true;
+
+    }
+
+    private boolean validatePassword(String password) {
+
+        if(password.isEmpty()) {
+            password_sign_up.setError("Field can't be empty");
+            return false;
+        } else if(!Utility.PASSWORD_PATTERN.matcher(password).matches()) {
+            password_sign_up.setError("a-z or A-Z and min 6 char");
+            return false;
+        }
+        password_sign_up.setError(null);
+        return true;
+
     }
 }

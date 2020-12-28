@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.assignment.R;
+import com.example.assignment.Utility;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class ForgetPassword extends AppCompatDialogFragment {
@@ -37,7 +39,12 @@ public class ForgetPassword extends AppCompatDialogFragment {
                 })
                 .setPositiveButton("Send", (dialog, which) -> {
                     String email = recovery_email.getText().toString();
-                    listener.onRequestResetPasswordLink(email);
+                    if(validateEmail(email)) {
+                        listener.onRequestResetPasswordLink(email);
+                        dismiss();
+                    } else {
+                        Toast.makeText(getContext(), "Invalid email", Toast.LENGTH_SHORT).show();
+                    }
                 });
 
         return builder.create();
@@ -56,6 +63,20 @@ public class ForgetPassword extends AppCompatDialogFragment {
 
     public interface ForgotDialogListener {
         void onRequestResetPasswordLink(String email);
+    }
+
+    private boolean validateEmail(String email) {
+
+        if(email.isEmpty()) {
+            recovery_email.setError("Field can't be empty");
+            return false;
+        } else if(!Utility.EMAIL_PATTERN.matcher(email).matches()) {
+            recovery_email.setError("Please enter a valid email");
+            return false;
+        }
+        recovery_email.setError(null);
+        return true;
+
     }
 
 }

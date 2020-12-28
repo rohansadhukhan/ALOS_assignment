@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.assignment.R;
+import com.example.assignment.Utility;
 import com.example.assignment.fragment.ForgetPassword;
 import com.example.assignment.fragment.SignUpFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,8 +26,8 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements SignUpFragment.SignUpListener, ForgetPassword.ForgotDialogListener {
 
-    private TextInputEditText email;
-    private TextInputEditText password;
+    private TextInputEditText email_input;
+    private TextInputEditText password_input;
     private MaterialButton signIn;
     private ProgressBar progressBar;
     private MaterialTextView forgetPassword;
@@ -42,8 +43,8 @@ public class LoginActivity extends AppCompatActivity implements SignUpFragment.S
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        email = findViewById(R.id.input_email);
-        password = findViewById(R.id.input_password);
+        email_input = findViewById(R.id.input_email);
+        password_input = findViewById(R.id.input_password);
         signIn = findViewById(R.id.sign_in);
         progressBar = findViewById(R.id.progress_bar);
         forgetPassword = findViewById(R.id.forget_password);
@@ -63,11 +64,11 @@ public class LoginActivity extends AppCompatActivity implements SignUpFragment.S
         });
 
         signIn.setOnClickListener(v -> {
-            if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty())
+            if (!validateEmail(email_input.getText().toString()) || !validatePassword(password_input.getText().toString()))
                 return;
             progressBar.setVisibility(View.VISIBLE);
             signIn.setVisibility(View.GONE);
-            signInUser(email.getText().toString(), password.getText().toString());
+            signInUser(email_input.getText().toString(), password_input.getText().toString());
         });
 
     }
@@ -130,5 +131,33 @@ public class LoginActivity extends AppCompatActivity implements SignUpFragment.S
         mAuth.sendPasswordResetEmail(email)
                 .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Verification link has been send", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Error occurred : " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    private boolean validateEmail(String email) {
+
+        if(email.isEmpty()) {
+            email_input.setError("Field can't be empty");
+            return false;
+        } else if(!Utility.EMAIL_PATTERN.matcher(email).matches()) {
+            email_input.setError("Please enter a valid email");
+            return false;
+        }
+        email_input.setError(null);
+        return true;
+
+    }
+
+    private boolean validatePassword(String password) {
+
+        if(password.isEmpty()) {
+            password_input.setError("Field can't be empty");
+            return false;
+        } else if(!Utility.PASSWORD_PATTERN.matcher(password).matches()) {
+            password_input.setError("a-z or A-Z and min 6 char");
+            return false;
+        }
+        password_input.setError(null);
+        return true;
+
     }
 }
